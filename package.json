@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "module": "",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "bin": {
     "compose-generator": "src/index.js"
   },
