@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const term = require('terminal-kit').terminal;
 const fs = require("fs");
 const { getInfo } = require('./ai');
@@ -76,7 +77,9 @@ async function promptConfirmation(prompt, rejectionMessage) {
   process.exit();	
 }
 
-run(process.cwd())
+const directory = process.argv[2] || process.cwd();
+
+run(directory)
   .catch(err => {
     console.error(err);
     process.exit(1);
