@@ -7,6 +7,9 @@
   "bin": {
     "compose-generator": "src/index.js"
   },
+  "scripts": {
+    "dev": "jest --watch"
+  },
   "devDependencies": {
     "jest": "^29.7.0"
   },
