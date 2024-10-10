@@ -8,7 +8,8 @@
     "compose-generator": "src/index.js"
   },
   "scripts": {
-    "dev": "jest --watch"
+    "dev": "jest --watch",
+    "test": "jest tests/**/*.test.js"
   },
   "devDependencies": {
     "jest": "^29.7.0"

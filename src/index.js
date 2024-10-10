@@ -43,7 +43,21 @@ async function run(directory) {
 
   // console.log("RAW REPSONSE", response.content);
 
-  const { composeFile, description, detectedServices } = JSON.parse(response.content);
+  let composeFile, description, detectedServices;
+  try {
+    const data = JSON.parse(response.content);
+    composeFile = data.composeFile;
+    description = data.description;
+    detectedServices = data.detectedServices;
+  } catch (err) {
+    term.red(`🚨 Error parsing response from AI: ${err.message}\n`);
+    term.red(`🚨 Response: ${response.content}\n`);
+    term.reset();
+    return;
+  }
+
+  composeFile = composeFile.replace(/\\n/g, '\n');
+  description = description.replace(/\\n/g, '\n');
 
   term.green("🎉 Compose File Generated!\n");
   term.green("🎉 Discovered services: ").white(`${detectedServices}\n`);
@@ -57,8 +71,8 @@ async function run(directory) {
     .flatMap(line => line.match(/(?![^\n]{1,80}$)([^\n]{1,80})\s/g) || line) // Word wrap at 80 characters
     .map(line => `# ${line.trimStart()}`)
     .join("\n");
-  fs.writeFileSync("compose.generated.yaml", `${startingComments}\n${composeFile}`);
-  term.green("🎉 Compose file saved to compose.generated.yaml\n");
+  fs.writeFileSync("compose.yaml", `${startingComments}\n${composeFile}`);
+  term.green("🎉 Compose file saved to compose.yaml\n");
 }
 
 async function wait(millis) {
@@ -70,6 +84,7 @@ async function promptConfirmation(prompt, rejectionMessage) {
 
   const yesOrNoResult = term.yesOrNo( { yes: [ 'y' , 'ENTER' ] , no: [ 'n' ] });
   const result = await yesOrNoResult.promise;
+  term.grabInput(false);
   if (result)
     return;
 

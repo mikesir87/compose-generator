@@ -15,7 +15,9 @@ function getDependencies(directoryPath) {
   return JSON.parse(dependencyOutput)
     .data
     .trees
-    .map(item => item.name.split('@')[0])
+    .map(item =>
+      item.name.startsWith("@") ? "@" + item.name.split("@")[1] : item.name.split("@")[0]
+    )
     .filter(item => item !== 'undefined')
     .filter((value, index, array) => array.indexOf(value) === index);
 }
